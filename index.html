@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Politique de Confidentialité — La Méthode SMP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8D08A;
+      --dark: #0D0D0D;
+      --surface: #141414;
+      --surface2: #1C1C1C;
+      --border: rgba(201,168,76,0.18);
+      --text: #E8E4DC;
+      --muted: #8A8070;
+      --accent: #C9A84C;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--dark);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.75;
+      font-size: 15px;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Background texture */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: 
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(201,168,76,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 90% 80%, rgba(201,168,76,0.04) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Noise overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* Header */
+    header {
+      padding: 64px 0 48px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 56px;
+      position: relative;
+    }
+
+    .app-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(201,168,76,0.08);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 6px 16px;
+      margin-bottom: 28px;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    .app-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(32px, 6vw, 52px);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    h1 span {
+      color: var(--gold);
+      font-style: italic;
+    }
+
+    .update-date {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* Intro */
+    .intro {
+      background: linear-gradient(135deg, rgba(201,168,76,0.06) 0%, transparent 60%);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .intro::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: linear-gradient(180deg, var(--gold) 0%, transparent 100%);
+      border-radius: 3px 0 0 3px;
+    }
+
+    .intro p {
+      font-size: 15px;
+      color: rgba(232,228,220,0.8);
+      line-height: 1.8;
+    }
+
+    /* Table of contents */
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 56px;
+    }
+
+    .toc-title {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+      margin-bottom: 18px;
+    }
+
+    .toc ol {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 24px;
+    }
+
+    @media (max-width: 520px) {
+      .toc ol { grid-template-columns: 1fr; }
+    }
+
+    .toc ol li a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s;
+      padding: 4px 0;
+    }
+
+    .toc ol li a:hover { color: var(--gold); }
+
+    .toc ol li a .num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      color: rgba(201,168,76,0.4);
+      min-width: 22px;
+      font-weight: 600;
+    }
+
+    /* Sections */
+    section {
+      margin-bottom: 52px;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 42px;
+      font-weight: 700;
+      color: rgba(201,168,76,0.15);
+      line-height: 1;
+      min-width: 48px;
+      margin-top: -4px;
+    }
+
+    h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: 0.01em;
+      line-height: 1.2;
+    }
+
+    h3 {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin: 24px 0 10px;
+    }
+
+    p {
+      color: rgba(232,228,220,0.75);
+      margin-bottom: 14px;
+      font-size: 14.5px;
+    }
+
+    p:last-child { margin-bottom: 0; }
+
+    /* Data cards */
+    .data-group {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .data-group-title {
+      padding: 12px 20px;
+      background: rgba(201,168,76,0.06);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .data-items {
+      padding: 14px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .data-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13.5px;
+      color: rgba(232,228,220,0.7);
+    }
+
+    .data-item::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--gold);
+      opacity: 0.5;
+      flex-shrink: 0;
+    }
+
+    /* Rights list */
+    .rights-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .right-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 20px;
+      transition: border-color 0.2s;
+    }
+
+    .right-item:hover { border-color: rgba(201,168,76,0.35); }
+
+    .right-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: rgba(201,168,76,0.08);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 15px;
+    }
+
+    .right-text {
+      font-size: 13.5px;
+      color: rgba(232,228,220,0.72);
+      line-height: 1.6;
+    }
+
+    .right-text strong {
+      display: block;
+      color: var(--text);
+      font-weight: 500;
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+
+    /* Security badges */
+    .security-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 480px) {
+      .security-grid { grid-template-columns: 1fr; }
+    }
+
+    .security-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .security-item:hover {
+      border-color: rgba(201,168,76,0.3);
+      background: rgba(201,168,76,0.03);
+    }
+
+    .security-icon {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .security-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .security-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* Services */
+    .service-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .service-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 20px;
+    }
+
+    .service-logo {
+      width: 36px;
+      height: 36px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+
+    .service-info strong {
+      display: block;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .service-info span {
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+
+    /* Divider */
+    .gold-divider {
+      width: 48px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      margin: 0 0 20px;
+    }
+
+    /* Contact */
+    .contact-box {
+      background: linear-gradient(135deg, rgba(201,168,76,0.07) 0%, rgba(201,168,76,0.02) 100%);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 14px;
+      padding: 32px 36px;
+      text-align: center;
+    }
+
+    .contact-box .contact-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .contact-box p {
+      font-size: 13.5px;
+      margin-bottom: 20px;
+    }
+
+    .contact-email {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold);
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      border: 1px solid rgba(201,168,76,0.3);
+      padding: 10px 22px;
+      border-radius: 100px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .contact-email:hover {
+      background: rgba(201,168,76,0.1);
+      border-color: rgba(201,168,76,0.5);
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 64px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.04em;
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* Scroll to top */
+    .scroll-top {
+      position: fixed;
+      bottom: 28px;
+      right: 24px;
+      width: 42px;
+      height: 42px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.3s, background 0.2s;
+      z-index: 100;
+      color: var(--gold);
+      font-size: 18px;
+      text-decoration: none;
+    }
+
+    .scroll-top.visible { opacity: 1; }
+    .scroll-top:hover { background: rgba(201,168,76,0.1); }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <div class="app-badge">Application Mobile</div>
+    <h1>Politique de <span>Confidentialité</span></h1>
+    <p class="update-date">Dernière mise à jour : 23 mai 2026</p>
+  </header>
+
+  <div class="intro">
+    <p>Bienvenue sur <strong style="color:var(--text)">La Méthode SMP</strong>. La protection de vos données personnelles et le respect de votre vie privée sont au cœur de nos priorités. Cette politique explique quelles informations sont collectées, comment elles sont utilisées et les mesures mises en place pour assurer leur sécurité.</p>
+    <p style="margin-top:12px; font-size:13px; color:var(--muted)">En utilisant l'application La Méthode SMP, vous acceptez les pratiques décrites dans la présente politique.</p>
+  </div>
+
+  <!-- Table of contents -->
+  <div class="toc">
+    <div class="toc-title">Sommaire</div>
+    <ol>
+      <li><a href="#s1"><span class="num">1</span>Données collectées</a></li>
+      <li><a href="#s2"><span class="num">2</span>Utilisation des données</a></li>
+      <li><a href="#s3"><span class="num">3</span>Services tiers</a></li>
+      <li><a href="#s4"><span class="num">4</span>Sécurité</a></li>
+      <li><a href="#s5"><span class="num">5</span>Conservation</a></li>
+      <li><a href="#s6"><span class="num">6</span>Vos droits</a></li>
+      <li><a href="#s7"><span class="num">7</span>Suppression du compte</a></li>
+      <li><a href="#s8"><span class="num">8</span>Modifications</a></li>
+      <li><a href="#s9"><span class="num">9</span>Contact</a></li>
+    </ol>
+  </div>
+
+  <!-- Section 1 -->
+  <section id="s1">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <h2>Données Collectées</h2>
+    </div>
+    <p>Afin d'assurer le bon fonctionnement de l'application et de vous fournir nos services de formation, nous pouvons collecter les informations suivantes :</p>
+
+    <div class="data-group">
+      <div class="data-group-title">Informations d'identification</div>
+      <div class="data-items">
+        <div class="data-item">Nom d'affichage</div>
+        <div class="data-item">Adresse e-mail</div>
+        <div class="data-item">Numéro de téléphone</div>
+        <div class="data-item">Informations de connexion via Google, Facebook ou inscription manuelle</div>
+      </div>
+    </div>
+
+    <div class="data-group">
+      <div class="data-group-title">Données de connexion et de sécurité</div>
+      <div class="data-items">
+        <div class="data-item">Historique des connexions</div>
+        <div class="data-item">Adresse IP et informations techniques de l'appareil</div>
+        <div class="data-item">Jetons de sécurité et vérifications d'intégrité (App Check / Play Integrity)</div>
+      </div>
+    </div>
+
+    <div class="data-group">
+      <div class="data-group-title">Données liées à l'utilisation</div>
+      <div class="data-items">
+        <div class="data-item">Progression dans les formations</div>
+        <div class="data-item">Historique de visionnage des contenus vidéo</div>
+        <div class="data-item">Interactions avec les fonctionnalités de l'application</div>
+      </div>
+    </div>
+
+    <div class="data-group">
+      <div class="data-group-title">Données de transaction</div>
+      <div class="data-items">
+        <div class="data-item">Historique des activations de piliers ou services</div>
+        <div class="data-item">Montants des paiements</div>
+        <div class="data-item">Dates et méthodes de paiement utilisées</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2 -->
+  <section id="s2">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <h2>Utilisation des Données</h2>
+    </div>
+    <p>Les données collectées sont utilisées uniquement dans le cadre des services proposés par La Méthode SMP, notamment pour :</p>
+
+    <div class="data-group">
+      <div class="data-items">
+        <div class="data-item">Fournir l'accès aux formations et contenus achetés</div>
+        <div class="data-item">Gérer votre compte utilisateur</div>
+        <div class="data-item">Sauvegarder votre progression dans les formations</div>
+        <div class="data-item">Renforcer la sécurité et prévenir les accès frauduleux</div>
+        <div class="data-item">Assurer la communication avec l'assistance via le chat intégré</div>
+        <div class="data-item">Améliorer les performances et l'expérience utilisateur</div>
+        <div class="data-item">Générer des statistiques anonymes à des fins d'analyse</div>
+      </div>
+    </div>
+
+    <div class="intro" style="margin-top:16px; margin-bottom:0;">
+      <p style="font-size:13.5px; font-weight:500; color:var(--text)">🔒 Nous ne vendons ni ne louons vos données personnelles à des tiers.</p>
+    </div>
+  </section>
+
+  <!-- Section 3 -->
+  <section id="s3">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <h2>Services Tiers Utilisés</h2>
+    </div>
+    <p>L'application s'appuie sur certains services tiers, principalement ceux de Google Firebase :</p>
+
+    <div class="service-list">
+      <div class="service-item">
+        <div class="service-logo">🔐</div>
+        <div class="service-info">
+          <strong>Firebase Authentication</strong>
+          <span>Gestion de l'authentification des utilisateurs</span>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-logo">🗄️</div>
+        <div class="service-info">
+          <strong>Cloud Firestore</strong>
+          <span>Stockage sécurisé des données</span>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-logo">📁</div>
+        <div class="service-info">
+          <strong>Firebase Storage</strong>
+          <span>Hébergement des vidéos et fichiers</span>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-logo">🛡️</div>
+        <div class="service-info">
+          <strong>Firebase App Check / Play Integrity</strong>
+          <span>Protection contre les abus et accès non autorisés</span>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top:16px; font-size:13px; color:var(--muted)">Ces services peuvent traiter certaines de vos données conformément à leurs propres politiques de confidentialité.</p>
+  </section>
+
+  <!-- Section 4 -->
+  <section id="s4">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <h2>Sécurité des Données</h2>
+    </div>
+    <p>Nous mettons en œuvre plusieurs mesures techniques et organisationnelles afin de protéger vos informations personnelles :</p>
+
+    <div class="security-grid">
+      <div class="security-item">
+        <div class="security-icon">🔒</div>
+        <div class="security-label">Chiffrement SSL/TLS</div>
+        <div class="security-desc">Toutes les communications sont chiffrées via des protocoles SSL/TLS.</div>
+      </div>
+      <div class="security-item">
+        <div class="security-icon">📵</div>
+        <div class="security-label">Protection captures</div>
+        <div class="security-desc">Blocage des captures d'écran sur les interfaces sensibles (FLAG_SECURE).</div>
+      </div>
+      <div class="security-item">
+        <div class="security-icon">🎞️</div>
+        <div class="security-label">Filigrane dynamique</div>
+        <div class="security-desc">Intégré aux vidéos pour limiter la diffusion illégale des contenus.</div>
+      </div>
+      <div class="security-item">
+        <div class="security-icon">👁️</div>
+        <div class="security-label">Surveillance des accès</div>
+        <div class="security-desc">Systèmes de contrôle et surveillance contre les accès non autorisés.</div>
+      </div>
+    </div>
+
+    <p style="margin-top:18px; font-size:13px; color:var(--muted)">Malgré nos efforts, aucun système de transmission ou de stockage électronique n'est totalement sécurisé. Nous nous engageons néanmoins à appliquer les meilleures pratiques de sécurité disponibles.</p>
+  </section>
+
+  <!-- Section 5 -->
+  <section id="s5">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <h2>Conservation des Données</h2>
+    </div>
+    <p>Vos données personnelles sont conservées uniquement pendant la durée nécessaire à la fourniture des services ou conformément aux obligations légales applicables.</p>
+    <p>En cas de suppression de votre compte, vos données seront supprimées ou anonymisées dans un délai raisonnable, sauf obligation légale contraire.</p>
+  </section>
+
+  <!-- Section 6 -->
+  <section id="s6">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <h2>Vos Droits</h2>
+    </div>
+    <p>Conformément aux réglementations applicables en matière de protection des données, vous disposez des droits suivants :</p>
+
+    <div class="rights-list">
+      <div class="right-item">
+        <div class="right-icon">👁️</div>
+        <div class="right-text">
+          <strong>Droit d'accès</strong>
+          Consultez à tout moment les données personnelles que nous détenons vous concernant.
+        </div>
+      </div>
+      <div class="right-item">
+        <div class="right-icon">✏️</div>
+        <div class="right-text">
+          <strong>Droit de rectification</strong>
+          Demandez la correction de toute information inexacte ou incomplète.
+        </div>
+      </div>
+      <div class="right-item">
+        <div class="right-icon">🗑️</div>
+        <div class="right-text">
+          <strong>Droit de suppression</strong>
+          Demandez l'effacement de vos données personnelles dans les conditions prévues par la loi.
+        </div>
+      </div>
+      <div class="right-item">
+        <div class="right-icon">⏸️</div>
+        <div class="right-text">
+          <strong>Droit de limitation ou d'opposition</strong>
+          Limitez ou opposez-vous au traitement de certaines de vos données.
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top:18px; font-size:13px; color:var(--muted)">Vous pouvez exercer ces droits à tout moment en contactant l'assistance de l'application.</p>
+  </section>
+
+  <!-- Section 7 -->
+  <section id="s7">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <h2>Suppression du Compte</h2>
+    </div>
+    <p>Vous pouvez demander la suppression de votre compte ainsi que des données associées directement depuis l'application ou en contactant le support.</p>
+    <p>Une fois la demande validée, les données seront supprimées dans les meilleurs délais, sous réserve des obligations légales de conservation.</p>
+  </section>
+
+  <!-- Section 8 -->
+  <section id="s8">
+    <div class="section-header">
+      <div class="section-num">08</div>
+      <h2>Modifications de la Politique</h2>
+    </div>
+    <p>Cette politique de confidentialité peut être mise à jour à tout moment afin de refléter les évolutions de l'application, des services proposés ou des exigences légales.</p>
+    <p>En cas de modification importante, les utilisateurs seront informés via l'application ou par tout autre moyen approprié.</p>
+  </section>
+
+  <!-- Section 9 -->
+  <section id="s9">
+    <div class="section-header">
+      <div class="section-num">09</div>
+      <h2>Contact</h2>
+    </div>
+    <div class="contact-box">
+      <div class="contact-title">Une question sur vos données ?</div>
+      <p>Pour toute question concernant cette politique de confidentialité ou le traitement de vos données personnelles, contactez-nous.</p>
+      <a href="mailto:support@lametodesmp.com" class="contact-email">
+        ✉️ &nbsp;support@lametodesmp.com
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-brand">La Méthode SMP</div>
+    <div class="footer-copy">© 2026 — Tous droits réservés</div>
+  </footer>
+
+</div>
+
+<a href="#" class="scroll-top" id="scrollTop" title="Retour en haut">↑</a>
+
+<script>
+  const btn = document.getElementById('scrollTop');
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('visible', window.scrollY > 300);
+  });
+
+  // Stagger section animations on scroll
+  const sections = document.querySelectorAll('section');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        e.target.style.animationDelay = '0ms';
+        e.target.style.animationPlayState = 'running';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  sections.forEach(s => {
+    s.style.animationPlayState = 'paused';
+    observer.observe(s);
+  });
+</script>
+</body>
+</html>
